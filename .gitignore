@@ -1,2 +1,5 @@
 #ignore node dependencies folder
 node_modules
+
+#ignore graphite storage volume (local development)
+graphite

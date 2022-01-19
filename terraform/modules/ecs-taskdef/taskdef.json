@@ -1,0 +1,85 @@
+[{
+    "name": "app",
+    "image": "httpd:2.4",
+    "resourceRequirements": null,
+    "essential": true,
+    "environment": [
+        {
+            "name": "METRICS_BACKEND_HOST",
+            "value": "localhost"
+        },
+        {
+            "name": "METRICS_BACKEND_PORT",
+            "value": "8125"
+        }
+    ],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "/ecs/example-app/app",
+            "awslogs-region": "ap-southeast-1",
+            "awslogs-stream-prefix": "ecs"
+        }
+    }
+},
+{
+    "name": "graphite",
+    "image": "graphiteapp/graphite-statsd:1.1.8-5",
+    "resourceRequirements": null,
+    "essential": true,
+    "portMappings": [
+        {
+            "containerPort": 80,
+            "protocol": "tcp"
+        },
+        {
+            "containerPort": 2003,
+            "protocol": "tcp"
+        },
+        {
+            "containerPort": 2023,
+            "protocol": "tcp"
+        },
+        {
+            "containerPort": 8125,
+            "protocol": "udp"
+        },
+        {
+            "containerPort": 8126,
+            "protocol": "tcp"
+        },
+        {
+            "containerPort": 2004,
+            "protocol": "tcp"
+        },
+        {
+            "containerPort": 2024,
+            "protocol": "tcp"
+        }
+    ],
+    "environment": [
+        {
+            "name": "COLLECTD",
+            "value": "1"
+        },
+        {
+            "name": "GRAPHITE_TIME_ZONE",
+            "value": "Asia/Bangkok"
+        }
+    ],
+    "mountPoints": [
+        {
+            "sourceVolume": "graphite",
+            "containerPath": "/opt/graphite/storage",
+            "readOnly": false
+        }
+    ],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "/ecs/example-app/graphite",
+            "awslogs-region": "ap-southeast-1",
+            "awslogs-stream-prefix": "ecs"
+        }
+    }
+}]

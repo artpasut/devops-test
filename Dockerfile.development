@@ -7,5 +7,6 @@ RUN npm install
 
 COPY index.js .
 
+USER node
 ENTRYPOINT [ "npm" ]
 CMD [ "run", "development" ]

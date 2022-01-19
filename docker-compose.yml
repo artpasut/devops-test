@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    depends_on:
+      - graphite
+    restart: always
+    environment:
+      - METRICS_BACKEND_HOST=graphite
+      - METRICS_BACKEND_PORT=8125
+    networks:
+      - local
+
+  graphite:
+    image: graphiteapp/graphite-statsd:1.1.8-5
+    volumes:
+      - ./graphite/storage:/opt/graphite/storage
+    environment:
+      - COLLECTD=1 #enable or disable collectd
+      - GRAPHITE_TIME_ZONE=Asia/Bangkok #graphite web timezone
+      - GRAPHITE_DEBUG=1 #enable or disable graphite debug mode
+    ports:
+      - 80:80 #graphite
+      - 2003-2004:2003-2004 #carbon reciever
+      - 2023-2024:2023-2024 #carbon aggregator
+      - 8125:8125/udp #statsd
+      - 8126:8126 #statsd admin
+    networks:
+      - local
+
+networks:
+  local:

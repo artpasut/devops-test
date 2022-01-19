@@ -3,3 +3,11 @@ node_modules
 
 #ignore graphite storage volume (local development)
 graphite
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl

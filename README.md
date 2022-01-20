@@ -28,3 +28,52 @@ Project root has [`index.js`](/index.js) file. It simulates a simple app that ru
 Email us your Github repo. We expect meaningful git commits, ideally one commit per exercise with commit messages clearly communicating the intent.
 
 In case you deploy it to any cloud platforms, please send us instructions & relevant IAM user credentials.
+
+---
+
+# Walkthrough
+
+## Technology stacks
+* Docker
+* Docker-compose
+* Terraform
+* Github Actions
+* AWS ECS
+
+## Application Environment Variables
+### App
+* `$METRICS_BACKEND_HOST` (Backend Host, default to `graphite`)
+* `$METRICS_BACKEND_PORT` (Backend Port, default to `8125`)
+### Graphite
+* `$COLLECTD` (enable[1] or disable[0] collectd, default to `1`)
+* `GRAPHITE_TIME_ZONE` (graphite web ui timezone, default to `Asia/Bangkok`)
+* `$GRAPHITE_DEBUG` (enable[1] or disable[0] debug mode, default to `1`)
+
+## Dockerize application
+### Using Docker
+```bash
+docker build -t $image_name:$imagetag -f $docker_file .
+```
+### Using Docker-compose
+The `docker-compose.yml` consists of the following. </br>
+* app (simple app & send metrics to statsd)
+* graphite (statsd & graphite as a backend)
+```bash
+docker-compose up -d
+```
+### Using Github Actions
+The Github Actions consists of following steps. `(.github/workflows/build-deploy-ecs.yml)` </br>
+1. Check out source code from main branch.
+2. Configure AWS credentials `(retrieve access key and secret key from Github repository secrets)`.
+3. Login to AWS ECR.
+4. Get imagetag from `package.json`.
+5. Build image & tag & push to AWS ECR.
+6. Update new image tag to task definition (AWS ECS).
+7. Deploy to AWS ECS service with new task definition.
+
+#### Running Github Actions
+```
+There are two ways to run.
+1. Merge, push to main branch will trigger Github Actions.
+2. Manually trigger Github Actions.
+```

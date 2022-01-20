@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "ap-southeast-1"
-  profile = "dailitech-demo"
+  profile = "example-aws-profile"
   #   shared_credentials_file = "~/.aws/config"
 }
 
@@ -9,7 +9,7 @@ terraform {
     bucket  = "art-automation-config"
     key     = "states"
     region  = "ap-southeast-1"
-    profile = "dailitech-demo"
+    profile = "example-aws-profile"
   }
 }
 

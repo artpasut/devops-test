@@ -55,20 +55,20 @@ In case you deploy it to any cloud platforms, please send us instructions & rele
 docker build -t $image_name:$imagetag -f $docker_file .
 ```
 ### Using Docker-compose
-The `docker-compose.yml` consists of the following. </br>
+The [`docker-compose.yml`](/docker-compose.yml) consists of the following. </br>
 * app (simple app & send metrics to statsd)
 * graphite (statsd & graphite as a backend)
 ```bash
 docker-compose up -d
 ```
 ### Using Github Actions
-The Github Actions consists of following steps. `(.github/workflows/build-deploy-ecs.yml)` </br>
+The Github Actions consists of following steps. [`(build-deploy-ecs.yml)`](/.github/workflows/build-deploy-ecs.yml) </br>
 1. Check out source code from main branch.
 2. Configure AWS credentials `(retrieve access key and secret key from Github repository secrets)`.
 3. Login to AWS ECR.
 4. Get imagetag from `package.json`.
 5. Build image & tag & push to AWS ECR.
-6. Update new image tag to task definition (AWS ECS).
+6. Update new image tag to task definition.
 7. Deploy to AWS ECS service with new task definition.
 
 #### Running Github Actions
